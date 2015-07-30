@@ -1,5 +1,5 @@
 <!-- Copyright 2014 ACR Development -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ui_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,14 +20,22 @@
 
             <include layout="@layout/toolbar" />
 
-            <include layout="@layout/browser_content" />
+            <include
+                layout="@layout/browser_content" />
 
             <include layout="@layout/search_interface" />
-        </LinearLayout>
+
+        </RelativeLayout>
 
         <include layout="@layout/tab_drawer" />
 
         <include layout="@layout/bookmark_drawer" />
     </android.support.v4.widget.DrawerLayout>
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/gestures_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+</RelativeLayout>

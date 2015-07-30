@@ -13,7 +13,9 @@
         android:layout_marginTop="2dp"
         android:background="?attr/actionBarItemBackground"
         android:clickable="true"
-        android:gravity="center" >
+        android:gravity="center"
+        android:visibility="gone"
+        >
 
         <ImageView
             android:id="@+id/arrow"
@@ -21,6 +23,22 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/number_tabs_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/ic_tabs"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:focusable="true"
+        android:text=""
+        android:textColor="@color/green_btn"
+        android:textSize="12sp" />
+
     <include layout="@layout/search" />
+
+
 
 </LinearLayout>

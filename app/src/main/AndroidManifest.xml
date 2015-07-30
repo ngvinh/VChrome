@@ -26,6 +26,7 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:label="@string/app_name" >
         <activity
             android:name=".activity.MainActivity"
@@ -209,6 +210,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="vn.viettel.browser.GestureBuilderActivity"
+            android:theme="@style/Theme.LightTheme"
+            ></activity>
     </application>
 
 </manifest>

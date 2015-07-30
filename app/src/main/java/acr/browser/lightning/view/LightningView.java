@@ -45,6 +45,8 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.etiennelawlor.quickreturn.library.views.NotifyingWebView;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +67,7 @@ import acr.browser.lightning.utils.Utils;
 public class LightningView {
 
 	private final Title mTitle;
-	private WebView mWebView;
+	private NotifyingWebView mWebView;
 	private BrowserController mBrowserController;
 	private GestureDetector mGestureDetector;
 	private final Activity mActivity;
@@ -94,7 +96,7 @@ public class LightningView {
 	public LightningView(Activity activity, String url, boolean darkTheme) {
 
 		mActivity = activity;
-		mWebView = new WebView(activity);
+		mWebView = new NotifyingWebView(activity);
 		mTitle = new Title(activity, darkTheme);
 		mAdBlock = AdBlock.getInstance(activity.getApplicationContext());
 
@@ -608,7 +610,7 @@ public class LightningView {
 		return mWebView != null && mWebView.canGoForward();
 	}
 
-	public WebView getWebView() {
+	public NotifyingWebView getWebView() {
 		return mWebView;
 	}
 

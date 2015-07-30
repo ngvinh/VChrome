@@ -40,4 +40,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'net.i2p.android:client:0.7@aar'
+    compile 'com.github.michaelye.easydialog:easydialog:1.0'
+    compile 'com.github.lawloretienne:quickreturn:0.0.1'
 }

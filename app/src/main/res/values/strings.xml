@@ -226,4 +226,28 @@
         <string name="dark_theme">Use Dark Theme</string>
         <string name="change_after_restart">The theme change will take effect after you restart the browser.</string>
         <string name="tabs">Tabs</string>
+    <string name="done">Done</string>
+    <string name="discard">Discard</string>
+    <string name="prompt_gesture_name">Prompt gesture name</string>
+    <string name="gestures_rename_label">Gestures rename label</string>
+    <string name="gestures_empty">Gestures Empty</string>
+    <string name="gestures_rename">Rename</string>
+    <string name="gestures_delete">Delete</string>
+    <string name="gestures_rename_title">Rename Gesture</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="gestures_delete_success">Delete sucess</string>
+    <string name="gestures_error_loading">Error loading gestures</string>
+    <string name="error_missing_name">Missing name</string>
+    <string name="save_success">Saved success</string>
+    <string name="gestures_loading">Gestures loading</string>
+    <string name="button_add">Add</string>
+    <string name="button_reload">Reload</string>
+    <string name="title_activity_gestures">GesturesActivity</string>
+    <string name="vChrome">VChrome</string>
+    <string name="ContextMenuViewImageInNewTab">View image in a new tab</string>
+    <string name="ContentDescriptionExitFullScreen">Exit full screen button</string>
+    <string name="ContentDescriptionFavicon">Website`s favicon</string>
+
+    <string name="ContentDescriptionTabPreview">Tab preview</string>
+    <string name="ContentDescriptionCloseTabButton">Close tab button</string>
 </resources>

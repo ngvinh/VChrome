@@ -34,4 +34,20 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="green_btn">#10b302</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="bg_bottombar">#e0e0e0</color>
+    <color name="bg_tip">#343</color>
+
+    <color name="home_1">#14b609</color>
+    <color name="home_2">#f1645b</color>
+    <color name="home_3">#ffd300</color>
+    <color name="home_4">#0075fd</color>
+    <color name="home_5">#fe6e00</color>
+    <color name="home_6">#16d8f3</color>
+    <color name="home_7">#860102</color>
+
+    <color name="gesture_color">#ffd9d9d9</color>
+    <color name="gray_border">#d6e0e5</color>
+
 </resources>

@@ -1,7 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_frame"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_content"
+    android:layout_below="@+id/toolbar_layout"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:background="@color/primary_color" />
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary_color" />
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black_overlay"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_bottombar"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ExitFullScreen"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dip"
+                android:contentDescription="@string/ContentDescriptionExitFullScreen"
+                android:src="@drawable/ic_exit_fullscreen"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/button_gesture"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:src="@drawable/vt_home_pressed" />
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

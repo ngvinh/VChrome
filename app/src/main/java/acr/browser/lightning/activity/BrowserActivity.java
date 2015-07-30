@@ -147,7 +147,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
     private ListView mDrawerListLeft, mDrawerListRight;
     private LinearLayout mDrawerLeft, mDrawerRight, mToolbarLayout;
     private RelativeLayout mSearchBar;
-    private RelativeLayout mUiLayout;
+    private LinearLayout mUiLayout;
     private TextView mNumberTabsTv;
     private GesturesFragment mGesturesFragment;
     private FrameLayout mGesturesFrame;
@@ -233,7 +233,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         // initialize background ColorDrawable
         mBackground.setColor(((ColorDrawable) mToolbarLayout.getBackground()).getColor());
 
-        mUiLayout = (RelativeLayout) findViewById(R.id.ui_layout);
+        mUiLayout = (LinearLayout) findViewById(R.id.ui_layout);
         mProgressBar = (AnimatedProgressBar) findViewById(R.id.progress_view);
         RelativeLayout newTab = (RelativeLayout) findViewById(R.id.new_tab_button);
         mDrawerLeft = (LinearLayout) findViewById(R.id.left_drawer);

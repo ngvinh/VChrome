@@ -39,14 +39,19 @@
             android:src="@drawable/ic_tab_close" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/tab_view"
-        android:contentDescription="@string/ContentDescriptionTabPreview"
+    <RelativeLayout
         android:layout_width="200dip"
-        android:layout_height="120dip"
-        android:focusable="false"
-        android:paddingLeft="2dip"
-        android:paddingRight="2dip"
-        android:src="@drawable/start_page" />
+        android:layout_height="120dip">
+
+        <ImageView
+            android:id="@+id/tab_view"
+            android:contentDescription="@string/ContentDescriptionTabPreview"
+            android:layout_width="200dip"
+            android:layout_height="120dip"
+            android:focusable="false"
+            android:paddingLeft="2dip"
+            android:paddingRight="2dip"
+            android:src="@drawable/start_page" />
+    </RelativeLayout>
 
 </LinearLayout>

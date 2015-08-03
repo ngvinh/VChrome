@@ -63,7 +63,7 @@ public class HistoryPage {
 		return Constants.FILE + historyWebPage;
 	}
 
-	private static List<HistoryItem> getWebHistory(Context context) {
+	public static List<HistoryItem> getWebHistory(Context context) {
 		HistoryDatabase databaseHandler = HistoryDatabase.getInstance(context
 				.getApplicationContext());
 		return databaseHandler.getLastHundredItems();

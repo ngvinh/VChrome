@@ -21,6 +21,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -63,6 +64,9 @@ import acr.browser.lightning.preference.PreferenceManager;
 import acr.browser.lightning.utils.AdBlock;
 import acr.browser.lightning.utils.IntentUtils;
 import acr.browser.lightning.utils.Utils;
+import vn.viettel.browser.Fragment.StartPageFragment;
+import vn.viettel.browser.Fragment.StartPageFragment;
+import vn.viettel.browser.utils.widget.BaseStartPageLayout;
 
 public class LightningView {
 
@@ -91,9 +95,11 @@ public class LightningView {
 			0, 0, 0, 1.0f, 0 // alpha
 	};
 
+	private boolean mIsStartPage = false;
+
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
-	public LightningView(Activity activity, String url, boolean darkTheme) {
+	public LightningView(FragmentActivity activity, String url, boolean darkTheme) {
 
 		mActivity = activity;
 		mWebView = new NotifyingWebView(activity);
@@ -135,6 +141,7 @@ public class LightningView {
 		initializeSettings(mWebView.getSettings(), activity);
 		initializePreferences(activity);
 
+		setIsStartPage(false);
 		if (url != null) {
 			if (!url.trim().isEmpty()) {
 				mWebView.loadUrl(url);
@@ -143,6 +150,7 @@ public class LightningView {
 			}
 		} else {
 			if (mHomepage.startsWith("about:home")) {
+				setIsStartPage(true);
 				mWebView.loadUrl(getHomepage());
 			} else if (mHomepage.startsWith("about:bookmarks")) {
 				mBrowserController.openBookmarkPage(mWebView);
@@ -646,6 +654,14 @@ public class LightningView {
 		} else {
 			return "";
 		}
+	}
+
+	public boolean isStartPage() {
+		return mIsStartPage;
+	}
+
+	public void setIsStartPage(boolean mIsStartPage) {
+		this.mIsStartPage = mIsStartPage;
 	}
 
 	public class LightningWebClient extends WebViewClient {

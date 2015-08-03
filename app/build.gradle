@@ -42,4 +42,6 @@ dependencies {
     compile 'net.i2p.android:client:0.7@aar'
     compile 'com.github.michaelye.easydialog:easydialog:1.0'
     compile 'com.github.lawloretienne:quickreturn:0.0.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.android.support:design:22.2.1'
 }

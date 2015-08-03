@@ -250,4 +250,44 @@
 
     <string name="ContentDescriptionTabPreview">Tab preview</string>
     <string name="ContentDescriptionCloseTabButton">Close tab button</string>
+
+    <string name="SslWarning">Security warning</string>
+    <string name="SslWarningsHeader">There are problems with the security certificate for this site (%s).</string>
+    <string name="SslUntrusted">This certificate is not from a trusted authority.</string>
+    <string name="SslIDMismatch">The name of the site does not match the name on the certificate.</string>
+    <string name="SslExpired">This certificate has expired.</string>
+    <string name="SslNotYetValid">This certificate is not valid yet.</string>
+
+    <string name="SslInvalid">This certificate is invalid.</string>
+    <string name="SslDateInvalid">This certificate date is invalid.</string>
+
+    <string name="home_1">#14b609</string>
+    <string name="home_2">#f1645b</string>
+    <string name="home_3">#ffd300</string>
+    <string name="home_4">#0075fd</string>
+    <string name="home_5">#fe6e00</string>
+    <string name="home_6">#16d8f3</string>
+    <string name="home_7">#860102</string>
+
+
+    <string name="ContentDescriptionDivider">divider</string>
+    <string name="ContentDescriptionApplicationIcon">Application icon</string>
+    <string name="ContentDescriptionSuggestionIcon">Suggestion favicon</string>
+    <string name="ContentDescriptionBookmarkThumbnail">Bookmark thumbnail</string>
+    <string name="ContentDescriptionGoStopReloadButton">Go / Stop / Reload button</string>
+    <string name="ContentDescriptionMenuButton">Menu button</string>
+    <string name="ContentDescriptionPreviousTabButton">Previous tab button</string>
+    <string name="ContentDescriptionNextTabButton">Next tab button</string>
+    <string name="ContentDescriptionLeftBubble">Left bubble</string>
+    <string name="ContentDescriptionRightBubble">Right bubble</string>
+    <string name="ContentDescriptionBackButton">Back button</string>
+    <string name="ContentDescriptionBookmarksButton">Bookmarks button</string>
+    <string name="ContentDescriptionNewTabButton">New tab button</string>
+    <string name="ContentDescriptionForwardButton">Forward button</string>
+    <string name="ContentDescriptionHomeButton">Home button</string>
+    <string name="ContentDescriptionWebsiteSettingsLocation">Website location</string>
+    <string name="ContentDescriptionWebsiteSettingsUsage">Website usage</string>
+    <string name="ContentDescriptionWebsiteSettingsFeature">Website feature</string>
+    <string name="home_page">Home Page</string>
+    <string name="bookmark">Bookmark</string>
 </resources>

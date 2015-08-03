@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -36,6 +37,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Browser;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -134,9 +136,12 @@ import info.guardianproject.onionkit.ui.OrbotHelper;
 import info.guardianproject.onionkit.web.WebkitProxy;
 import vn.viettel.browser.GestureBuilderActivity;
 import vn.viettel.browser.GesturesFragment;
+import vn.viettel.browser.adapter.LightningViewAdapter;
+import vn.viettel.browser.listener.CloseTabListener;
 import vn.viettel.browser.listener.GesturesListener;
 import vn.viettel.browser.models.GesturesAction;
 import vn.viettel.browser.models.GesturesType;
+import vn.viettel.browser.utils.widget.BaseStartPageLayout;
 
 public class BrowserActivity extends ThemableActivity implements BrowserController, OnClickListener, GesturesListener {
 
@@ -151,6 +156,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
     private TextView mNumberTabsTv;
     private GesturesFragment mGesturesFragment;
     private FrameLayout mGesturesFrame;
+    private BaseStartPageLayout mStartFragment;
 
     // List
     private final List<LightningView> mWebViews = new ArrayList<>();
@@ -176,7 +182,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
     private QuickReturnWebViewOnScrollChangedListener scrollListener;
 
     // Context
-    private Activity mActivity;
+    private FragmentActivity mActivity;
 
     // Native
     private boolean mSystemBrowser = false, mIsNewIntent = false, mFullScreen, mColorMode,
@@ -226,6 +232,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         mDarkTheme = mPreferences.getUseDarkTheme() || isIncognito();
         mActivity = this;
         mWebViews.clear();
+        mStartFragment = new BaseStartPageLayout(this);
 
         mClickHandler = new ClickHandler(this);
         mBrowserFrame = (FrameLayout) findViewById(R.id.content_frame);
@@ -258,7 +265,12 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
 
         mHomepage = mPreferences.getHomepage();
 
-        mTitleAdapter = new LightningViewAdapter(this, R.layout.tab_list_item, mWebViews);
+        mTitleAdapter = new LightningViewAdapter(this, R.layout.tab_view, mWebViews, new CloseTabListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTab((int)v.getTag());
+            }
+        });
         mDrawerListLeft.setAdapter(mTitleAdapter);
         mDrawerListLeft.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerListLeft.setOnItemLongClickListener(new DrawerItemLongClickListener());
@@ -273,7 +285,6 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.toolbar_content);
-
         View v = actionBar.getCustomView();
         LayoutParams lp = v.getLayoutParams();
         lp.width = LayoutParams.MATCH_PARENT;
@@ -290,6 +301,8 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         mNumberTabsTv = (TextView) actionBar.getCustomView().findViewById(R.id.number_tabs_tv);
         mNumberTabsTv.setOnClickListener(this);
         findViewById(R.id.button_gesture).setOnClickListener(this);
+        findViewById(R.id.add_tab_btn).setOnClickListener(this);
+        findViewById(R.id.home_btn).setOnClickListener(this);
 
         mI2PHelper = new I2PAndroidHelper(this);
 
@@ -355,7 +368,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         int headerHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.header_height2);
         int headerTranslation = -(headerHeight);
         int footerTranslation = mActivity.getResources().getDimensionPixelSize(R.dimen.footer_height);
-        scrollListener = new QuickReturnWebViewOnScrollChangedListener.Builder(QuickReturnViewType.BOTH)
+        scrollListener = new QuickReturnWebViewOnScrollChangedListener.Builder(QuickReturnViewType.FOOTER)
                 .header(mToolbarLayout)
                 .minFooterTranslation(footerTranslation)
                 .footer(mFooterLayout)
@@ -441,7 +454,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
                 mCurrentView.reload();
                 break;
             case GesturesType.GO_TO_URL:
-                updateUrl(action.getData(), false);
+                searchTheWeb(action.getData());
                 break;
         }
 
@@ -467,7 +480,11 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
                     mCurrentView.goBack();
                 }
             } else {
-                deleteTab(mDrawerListLeft.getCheckedItemPosition());
+                if(!mCurrentView.isStartPage()) {
+                    mCurrentView.setIsStartPage(true);
+                }
+                else
+                    deleteTab(mDrawerListLeft.getCheckedItemPosition());
             }
         } else {
             Log.e(Constants.TAG, "This shouldn't happen ever");
@@ -793,9 +810,9 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         int width = getResources().getDisplayMetrics().widthPixels - Utils.convertDpToPixels(56);
         int maxWidth;
         if (isTablet()) {
-            maxWidth = Utils.convertDpToPixels(320);
+            maxWidth = Utils.convertDpToPixels(260);
         } else {
-            maxWidth = Utils.convertDpToPixels(300);
+            maxWidth = Utils.convertDpToPixels(220);
         }
         if (width > maxWidth) {
             DrawerLayout.LayoutParams params = (android.support.v4.widget.DrawerLayout.LayoutParams) mDrawerLeft
@@ -1179,6 +1196,8 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (mCurrentView != null) {
+                if(mCurrentView.isStartPage())
+                    hiddenHomePage(true);
                 mCurrentView.loadUrl(mBookmarkList.get(position).getUrl());
             }
             // keep any jank from happening when the drawer is closed after the
@@ -1309,6 +1328,9 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
             updateProgress(0);
         }
 
+//        if(mCurrentView.isStartPage()){
+//            mBrowserFrame.addView(mStartFragment);
+//        }else
         mBrowserFrame.addView(mCurrentView.getWebView(), MATCH_PARENT);
         // Remove browser frame background to reduce overdraw
         mBrowserFrame.setBackgroundColor(0);
@@ -1400,6 +1422,10 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
             showTab(startingTab);
         }
         return true;
+    }
+
+    public boolean getColorMode(){
+        return mColorMode;
     }
 
     private synchronized void deleteTab(int position) {
@@ -1668,11 +1694,28 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         supportInvalidateOptionsMenu();
     }
 
+    private void hiddenHomePage(boolean hidden){
+        if(hidden){
+            mCurrentView.setIsStartPage(false);
+            mBrowserFrame.removeAllViews();
+            mBrowserFrame.addView(mCurrentView.getWebView());
+        }
+        else {
+            mCurrentView.setIsStartPage(true);
+            mCurrentView.setForegroundTab(false);
+            mCurrentView.onPause();
+            mBrowserFrame.removeAllViews();
+            mBrowserFrame.addView(mStartFragment);
+        }
+    }
+
     /**
      * searches the web for the query fixing any and all problems with the input
      * checks if it is a search, url, etc.
      */
     void searchTheWeb(String query) {
+//        if(mCurrentView.isStartPage())
+//            hiddenHomePage(true);
         if (query.equals("")) {
             return;
         }
@@ -1714,97 +1757,7 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
         }
     }
 
-    public class LightningViewAdapter extends ArrayAdapter<LightningView> {
-
-        final Context context;
-        ColorMatrix colorMatrix;
-        ColorMatrixColorFilter filter;
-        Paint paint;
-        final int layoutResourceId;
-        List<LightningView> data = null;
-        final CloseTabListener mExitListener;
-
-        public LightningViewAdapter(Context context, int layoutResourceId, List<LightningView> data) {
-            super(context, layoutResourceId, data);
-            this.layoutResourceId = layoutResourceId;
-            this.context = context;
-            this.data = data;
-            this.mExitListener = new CloseTabListener();
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-            LightningViewHolder holder;
-            if (row == null) {
-                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-                row = inflater.inflate(layoutResourceId, parent, false);
-
-                holder = new LightningViewHolder();
-                holder.txtTitle = (TextView) row.findViewById(R.id.textTab);
-                holder.favicon = (ImageView) row.findViewById(R.id.faviconTab);
-                holder.exit = (ImageView) row.findViewById(R.id.deleteButton);
-                holder.exit.setTag(position);
-                row.setTag(holder);
-            } else {
-                holder = (LightningViewHolder) row.getTag();
-            }
-
-            holder.exit.setTag(position);
-            holder.exit.setOnClickListener(mExitListener);
-
-            ViewCompat.jumpDrawablesToCurrentState(holder.exit);
-
-            LightningView web = data.get(position);
-            holder.txtTitle.setText(web.getTitle());
-            if (web.isForegroundTab()) {
-                holder.txtTitle.setTextAppearance(context, R.style.boldText);
-            } else {
-                holder.txtTitle.setTextAppearance(context, R.style.normalText);
-            }
-
-            Bitmap favicon = web.getFavicon();
-            if (web.isForegroundTab()) {
-
-                holder.favicon.setImageBitmap(favicon);
-                if (!isIncognito() && mColorMode)
-                    changeToolbarBackground(favicon);
-            } else {
-                Bitmap grayscaleBitmap = Bitmap.createBitmap(favicon.getWidth(),
-                        favicon.getHeight(), Bitmap.Config.ARGB_8888);
-
-                Canvas c = new Canvas(grayscaleBitmap);
-                if (colorMatrix == null || filter == null || paint == null) {
-                    paint = new Paint();
-                    colorMatrix = new ColorMatrix();
-                    colorMatrix.setSaturation(0);
-                    filter = new ColorMatrixColorFilter(colorMatrix);
-                    paint.setColorFilter(filter);
-                }
-
-                c.drawBitmap(favicon, 0, 0, paint);
-                holder.favicon.setImageBitmap(grayscaleBitmap);
-            }
-            return row;
-        }
-
-        class LightningViewHolder {
-            TextView txtTitle;
-            ImageView favicon;
-            ImageView exit;
-        }
-    }
-
-    private class CloseTabListener implements OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            deleteTab((int) v.getTag());
-        }
-
-    }
-
-    private void changeToolbarBackground(Bitmap favicon) {
+    public void changeToolbarBackground(Bitmap favicon) {
         Palette.from(favicon).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
@@ -2874,20 +2827,10 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.action_back:
-                if (mCurrentView != null) {
-                    if (mCurrentView.canGoBack()) {
-                        mCurrentView.goBack();
-                    } else {
-                        deleteTab(mDrawerListLeft.getCheckedItemPosition());
-                    }
-                }
+                back();
                 break;
             case R.id.action_forward:
-                if (mCurrentView != null) {
-                    if (mCurrentView.canGoForward()) {
-                        mCurrentView.goForward();
-                    }
-                }
+                forward();
                 break;
             case R.id.arrow_button:
                 if (mSearch != null && mSearch.hasFocus()) {
@@ -2918,6 +2861,12 @@ public class BrowserActivity extends ThemableActivity implements BrowserControll
                 break;
             case R.id.button_gesture:
                 showGestures(true);
+                break;
+            case R.id.add_tab_btn:
+                newTab(null, true);
+                break;
+            case R.id.home_btn:
+                mCurrentView.loadUrl(mCurrentView.getHomepage());
                 break;
         }
     }
